@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 
@@ -33,7 +30,8 @@ public class UserRegisterRequest {
     @Pattern(regexp = "^\\S+$", message = "密碼不得有任何空白符號")
     public String repeatPassword;
 
-    @JsonProperty(value = "email", namespace = "必須為信箱格式")
+    @JsonProperty(value = "email")
     @NotBlank(message = "信箱不得為空")
+    @Email(message = "必須為信箱格式")
     public String email;
 }

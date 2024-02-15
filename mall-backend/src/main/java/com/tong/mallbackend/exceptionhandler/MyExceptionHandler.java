@@ -1,5 +1,6 @@
 package com.tong.mallbackend.exceptionhandler;
 
+import com.tong.mallbackend.exceptions.MyUserException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -31,4 +32,16 @@ public class MyExceptionHandler {
                 .headers(headers)
                 .body(exception.getFieldError().getDefaultMessage());
     }
+
+    @ExceptionHandler(MyUserException.class)
+    public ResponseEntity<String> handle(MyUserException exception) {
+        log.warn(" User 錯誤訊息:{}", exception.getMessage());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType(MediaType.TEXT_PLAIN, StandardCharsets.UTF_8));
+        return ResponseEntity.status(exception.getStatus())
+                .headers(headers)
+                .body(exception.getMessage());
+    }
+
 }
