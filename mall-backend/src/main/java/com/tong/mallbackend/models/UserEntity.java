@@ -1,4 +1,4 @@
-package com.tong.mallbackend.model;
+package com.tong.mallbackend.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.ZonedDateTime;
-import java.util.Objects;
 
 /**
  * ClassName: UserEntity

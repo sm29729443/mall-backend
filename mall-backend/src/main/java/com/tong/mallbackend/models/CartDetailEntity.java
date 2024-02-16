@@ -1,22 +1,22 @@
-package com.tong.mallbackend.model;
+package com.tong.mallbackend.models;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 /**
- * ClassName: OrderDetailEntity
+ * ClassName: CartDetailEntity
  * Package: com.tong.mallbackend.model
  */
 @Entity
-@Table(name = "order_detail", schema = "mall_tong")
-public class OrderDetailEntity {
+@Table(name = "cart_detail", schema = "mall_tong")
+public class CartDetailEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "order_detail_id")
-    private int orderDetailId;
+    @Column(name = "cart_detail_id")
+    private int cartDetailId;
     @Basic
-    @Column(name = "order_id")
-    private int orderId;
+    @Column(name = "cart_id")
+    private int cartId;
     @Basic
     @Column(name = "product_id")
     private int productId;
@@ -27,20 +27,20 @@ public class OrderDetailEntity {
     @Column(name = "amount")
     private int amount;
 
-    public int getOrderDetailId() {
-        return orderDetailId;
+    public int getCartDetailId() {
+        return cartDetailId;
     }
 
-    public void setOrderDetailId(int orderDetailId) {
-        this.orderDetailId = orderDetailId;
+    public void setCartDetailId(int cartDetailId) {
+        this.cartDetailId = cartDetailId;
     }
 
-    public int getOrderId() {
-        return orderId;
+    public int getCartId() {
+        return cartId;
     }
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
+    public void setCartId(int cartId) {
+        this.cartId = cartId;
     }
 
     public int getProductId() {
@@ -71,12 +71,12 @@ public class OrderDetailEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OrderDetailEntity that = (OrderDetailEntity) o;
-        return orderDetailId == that.orderDetailId && orderId == that.orderId && productId == that.productId && quantity == that.quantity && amount == that.amount;
+        CartDetailEntity that = (CartDetailEntity) o;
+        return cartDetailId == that.cartDetailId && cartId == that.cartId && productId == that.productId && quantity == that.quantity && amount == that.amount;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(orderDetailId, orderId, productId, quantity, amount);
+        return Objects.hash(cartDetailId, cartId, productId, quantity, amount);
     }
 }

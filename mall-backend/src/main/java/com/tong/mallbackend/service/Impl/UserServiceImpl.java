@@ -3,18 +3,16 @@ package com.tong.mallbackend.service.Impl;
 import com.tong.mallbackend.dao.UserDao;
 import com.tong.mallbackend.dto.UserRegisterRequest;
 import com.tong.mallbackend.exceptions.MyUserException;
-import com.tong.mallbackend.model.UserEntity;
+import com.tong.mallbackend.models.UserEntity;
 import com.tong.mallbackend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * ClassName: UserServiceImpl
@@ -34,7 +32,7 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userDao.getByEmail(request.getEmail());
         if (userEntity != null) {
             log.warn("該 email {} 已被註冊", request.getEmail());
-            throw new MyUserException("信箱已被註冊", HttpStatus.BAD_REQUEST);
+            throw new MyUserException("email 已被註冊", HttpStatus.BAD_REQUEST);
         }
         UserEntity user = new UserEntity();
         user.setUserName(request.getName());
@@ -42,6 +40,7 @@ public class UserServiceImpl implements UserService {
         String encodePassword = passwordEncoder.encode(request.getPassword());
         user.setPassword(encodePassword);
         user.setEmail(request.getEmail());
+        user.setPoint(0);
 
         // 時間設置
         ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());

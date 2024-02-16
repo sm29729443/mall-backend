@@ -1,4 +1,4 @@
-package com.tong.mallbackend.model;
+package com.tong.mallbackend.models;
 
 import javax.persistence.*;
 import java.util.Objects;

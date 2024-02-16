@@ -1,7 +1,7 @@
 package com.tong.mallbackend.service;
 
 import com.tong.mallbackend.dto.UserRegisterRequest;
-import com.tong.mallbackend.model.UserEntity;
+import com.tong.mallbackend.models.UserEntity;
 
 /**
  * ClassName: UserService

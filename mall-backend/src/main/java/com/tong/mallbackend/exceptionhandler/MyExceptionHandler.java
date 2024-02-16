@@ -1,5 +1,6 @@
 package com.tong.mallbackend.exceptionhandler;
 
+import com.tong.mallbackend.dto.ErrorResponseBody;
 import com.tong.mallbackend.exceptions.MyUserException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -23,25 +24,19 @@ public class MyExceptionHandler {
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handle(MethodArgumentNotValidException exception) {
+    public ResponseEntity<ErrorResponseBody> handle(MethodArgumentNotValidException exception) {
         log.warn("前端參數錯誤訊息:{}", Objects.requireNonNull(exception.getFieldError()).getDefaultMessage());
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType(MediaType.TEXT_PLAIN, StandardCharsets.UTF_8));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .headers(headers)
-                .body(exception.getFieldError().getDefaultMessage());
+                .body(new ErrorResponseBody(exception.getClass().getName(), exception.getFieldError().getDefaultMessage()));
     }
 
     @ExceptionHandler(MyUserException.class)
-    public ResponseEntity<String> handle(MyUserException exception) {
+    public ResponseEntity<ErrorResponseBody> handle(MyUserException exception) {
         log.warn(" User 錯誤訊息:{}", exception.getMessage());
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType(MediaType.TEXT_PLAIN, StandardCharsets.UTF_8));
         return ResponseEntity.status(exception.getStatus())
-                .headers(headers)
-                .body(exception.getMessage());
+                .body(new ErrorResponseBody(exception));
     }
 
 }
