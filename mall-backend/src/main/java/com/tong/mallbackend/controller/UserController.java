@@ -93,6 +93,16 @@ public class UserController {
     }
 
     // 會員登出
+    @Operation(summary = "會員登入功能",
+            // 設定 Swagger requestBody
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "測試", required = true, content = @Content(schema = @Schema(implementation = UserLoginRequest.class))),
+            // 設定 Swagger responseBody
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "會員登出成功，不返回任何資訊"),
+                    @ApiResponse(responseCode = "401", description = "尚未登入",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponseBody.class)))}
+    )
     @GetMapping("/users/logout")
     public ResponseEntity<?> logout(HttpSession session) {
         session.removeAttribute("email");
