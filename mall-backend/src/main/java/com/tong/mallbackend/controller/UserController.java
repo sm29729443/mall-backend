@@ -2,6 +2,7 @@ package com.tong.mallbackend.controller;
 
 import com.tong.mallbackend.constants.ErrorTypeName;
 import com.tong.mallbackend.dto.ErrorResponseBody;
+import com.tong.mallbackend.dto.UserLoginRequest;
 import com.tong.mallbackend.dto.UserRegisterRequest;
 import com.tong.mallbackend.models.UserEntity;
 import com.tong.mallbackend.service.UserService;
@@ -14,10 +15,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 /**
@@ -59,8 +62,45 @@ public class UserController {
         log.info("會員建立成功");
         return ResponseEntity.status(HttpStatus.CREATED).body(userEntity);
     }
+
     // 會員登入
+    @Operation(summary = "會員登入功能",
+            // 設定 Swagger requestBody
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "測試", required = true, content = @Content(schema = @Schema(implementation = UserLoginRequest.class))),
+            // 設定 Swagger responseBody
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "會員登入成功",
+                            content = @Content(mediaType = "application/json", schema = @Schema(type = "object", implementation = UserEntity.class))),
+                    @ApiResponse(responseCode = "400", description = "email 或 password 參數錯誤，可能由以下原因產生：\n"
+                            + "- email 為空\n"
+                            + "- password 為空\n",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponseBody.class))),
+                    @ApiResponse(responseCode = "404", description = "email 或 password 與資料庫不一，可能由以下原因產生：\n"
+                            + "- email 不存在\n"
+                            + "- email 存在但 password 錯誤\n",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponseBody.class)))}
+    )
+    @PostMapping("/public/users/login")
+    public ResponseEntity<UserEntity> login(@RequestBody @Valid UserLoginRequest request,
+                                   HttpSession session) {
+        UserEntity user = userService.login(request, session);
+        log.info("登入成功 email:{}", request.getEmail());
+        log.info("session email:{}", session.getAttribute("email"));
+        log.info("session userName:{}", session.getAttribute("userName"));
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
     // 會員登出
+    @GetMapping("/users/logout")
+    public ResponseEntity<?> logout(HttpSession session) {
+        session.removeAttribute("email");
+        session.removeAttribute("userName");
+        session.removeAttribute("userId");
+        session.invalidate();
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
     // 會員密碼修改
     // 會員交易平台點數儲值
     // 會員交易平台點數扣款

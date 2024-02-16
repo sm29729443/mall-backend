@@ -1,6 +1,7 @@
 package com.tong.mallbackend.service.Impl;
 
 import com.tong.mallbackend.dao.UserDao;
+import com.tong.mallbackend.dto.UserLoginRequest;
 import com.tong.mallbackend.dto.UserRegisterRequest;
 import com.tong.mallbackend.exceptions.MyUserException;
 import com.tong.mallbackend.models.UserEntity;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
@@ -48,5 +50,23 @@ public class UserServiceImpl implements UserService {
 
         UserEntity userByCreate = userDao.save(user);
         return userByCreate;
+    }
+
+    @Override
+    public UserEntity login(UserLoginRequest request, HttpSession session) {
+        UserEntity user = userDao.getByEmail(request.getEmail());
+        if (user == null) {
+            log.warn("此 email 尚未註冊:{}", request.getEmail());
+            throw new MyUserException("信箱或密碼錯誤", HttpStatus.NOT_FOUND);
+        }
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            log.warn("此 email 密碼輸入錯誤:{}", request.getEmail());
+            throw new MyUserException("信箱或密碼錯誤", HttpStatus.NOT_FOUND);
+        }
+        session.setAttribute("email", user.getEmail());
+        session.setAttribute("userName", user.getUserName());
+        session.setAttribute("userId", user.getUserId());
+        return user;
     }
 }
