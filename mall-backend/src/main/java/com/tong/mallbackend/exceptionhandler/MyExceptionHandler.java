@@ -2,6 +2,7 @@ package com.tong.mallbackend.exceptionhandler;
 
 import com.tong.mallbackend.dto.ErrorResponseBody;
 import com.tong.mallbackend.exceptions.MyUserException;
+import com.tong.mallbackend.exceptions.ProductCategoryException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Objects;
 
 /**
@@ -39,4 +41,11 @@ public class MyExceptionHandler {
                 .body(new ErrorResponseBody(exception));
     }
 
+    @ExceptionHandler(ProductCategoryException.class)
+    public ResponseEntity<ErrorResponseBody> handle(ProductCategoryException exception) {
+        log.warn(" ProductCategory 錯誤訊息:{}", exception.getMessage());
+
+        return ResponseEntity.status(exception.getStatus())
+                .body(new ErrorResponseBody(exception));
+    }
 }

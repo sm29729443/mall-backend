@@ -27,20 +27,20 @@ public class UserEntity {
     @Column(name = "user_id")
     private int userId;
     @Basic
-    @Column(name = "user_name")
+    @Column(name = "user_name", nullable = false)
     private String userName;
     @Basic
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     @JsonIgnore
     private String password;
     @Basic
-    @Column(name = "email")
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
     @Basic
-    @Column(name = "registration_date")
+    @Column(name = "registration_date", nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private ZonedDateTime registrationDate;
     @Basic
-    @Column(name = "point")
+    @Column(name = "point", nullable = false)
     private int point;
 }
