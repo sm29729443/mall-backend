@@ -14,4 +14,6 @@ public interface UserService {
     public UserEntity register(UserRegisterRequest request);
 
     UserEntity login(UserLoginRequest request, HttpSession session);
+
+    UserEntity updatePoint(Integer userId, Integer point);
 }

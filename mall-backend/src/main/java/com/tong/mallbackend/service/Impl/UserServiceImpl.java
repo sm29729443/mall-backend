@@ -11,10 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Optional;
 
 /**
  * ClassName: UserServiceImpl
@@ -67,6 +69,18 @@ public class UserServiceImpl implements UserService {
         session.setAttribute("email", user.getEmail());
         session.setAttribute("userName", user.getUserName());
         session.setAttribute("userId", user.getUserId());
+        return user;
+    }
+
+    @Transactional
+    @Override
+    public UserEntity updatePoint(Integer userId, Integer point) {
+        UserEntity user = userDao.findById(userId).get();
+        if (point < 0 && Math.abs(point) > user.getPoint()) {
+            throw new MyUserException("扣款失敗，帳戶餘額不足", HttpStatus.BAD_REQUEST);
+        }
+        Integer newPoint = user.getPoint() + point;
+        user.setPoint(newPoint);
         return user;
     }
 }
