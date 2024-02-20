@@ -1,9 +1,11 @@
 package com.tong.mallbackend.service.Impl;
 
+import com.tong.mallbackend.dao.CartDao;
 import com.tong.mallbackend.dao.UserDao;
 import com.tong.mallbackend.dto.UserLoginRequest;
 import com.tong.mallbackend.dto.UserRegisterRequest;
 import com.tong.mallbackend.exceptions.MyUserException;
+import com.tong.mallbackend.models.CartEntity;
 import com.tong.mallbackend.models.UserEntity;
 import com.tong.mallbackend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +29,8 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private CartDao cartDao;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -51,6 +55,12 @@ public class UserServiceImpl implements UserService {
         user.setRegistrationDate(now);
 
         UserEntity userByCreate = userDao.save(user);
+
+        // 創建會員的購物車
+        CartEntity cartEntity = new CartEntity();
+        cartEntity.setUserId(userByCreate.getUserId());
+        cartEntity.setTotalAmount(0);
+        cartDao.save(cartEntity);
         return userByCreate;
     }
 
@@ -69,6 +79,9 @@ public class UserServiceImpl implements UserService {
         session.setAttribute("email", user.getEmail());
         session.setAttribute("userName", user.getUserName());
         session.setAttribute("userId", user.getUserId());
+
+        Optional<CartEntity> cartEntity = cartDao.findById(user.getUserId());
+        session.setAttribute("cartId", cartEntity.get().getCartId());
         return user;
     }
 
