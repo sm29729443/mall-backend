@@ -35,6 +35,7 @@ public class ProductEntity {
     private int price;
     @Basic
     @Column(name = "stock", nullable = false)
+    @Version
     private int stock;
     @Basic
     @Column(name = "image_url")

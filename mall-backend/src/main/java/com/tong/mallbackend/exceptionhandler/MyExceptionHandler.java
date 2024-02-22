@@ -3,6 +3,7 @@ package com.tong.mallbackend.exceptionhandler;
 import com.tong.mallbackend.dto.ErrorResponseBody;
 import com.tong.mallbackend.exceptions.MyUserException;
 import com.tong.mallbackend.exceptions.ProductCategoryException;
+import com.tong.mallbackend.exceptions.ProductException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -37,15 +38,20 @@ public class MyExceptionHandler {
     public ResponseEntity<ErrorResponseBody> handle(MyUserException exception) {
         log.warn(" User 錯誤訊息:{}", exception.getMessage());
 
-        return ResponseEntity.status(exception.getStatus())
-                .body(new ErrorResponseBody(exception));
+        return ResponseEntity.status(exception.getStatus()).body(new ErrorResponseBody(exception));
     }
 
     @ExceptionHandler(ProductCategoryException.class)
     public ResponseEntity<ErrorResponseBody> handle(ProductCategoryException exception) {
         log.warn(" ProductCategory 錯誤訊息:{}", exception.getMessage());
 
-        return ResponseEntity.status(exception.getStatus())
-                .body(new ErrorResponseBody(exception));
+        return ResponseEntity.status(exception.getStatus()).body(new ErrorResponseBody(exception));
     }
+
+    @ExceptionHandler(ProductException.class)
+    public ResponseEntity<ErrorResponseBody> handle(ProductException exception) {
+        log.warn(" ProductException 錯誤訊息:{}", exception.getMessage());
+        return ResponseEntity.status(exception.getStatus()).body(new ErrorResponseBody(exception));
+    }
+
 }
