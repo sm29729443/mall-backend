@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -26,7 +27,7 @@ public class CartController {
 
     // 新增商品至購物車
     @PostMapping("/users/cart")
-    public ResponseEntity<?> addProductToCart(@RequestBody CartDetailRequest request,
+    public ResponseEntity<?> addProductToCart(@RequestBody @Valid CartDetailRequest request,
                                               HttpSession session) {
         Integer cartId = (Integer) session.getAttribute("cartId");
         cartService.addProductToCart(request, cartId);

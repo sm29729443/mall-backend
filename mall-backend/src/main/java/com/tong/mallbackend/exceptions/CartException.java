@@ -1,11 +1,15 @@
 package com.tong.mallbackend.exceptions;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 /**
  * ClassName: CartException
  * Package: com.tong.mallbackend.exceptions
  */
+@Getter
+@Setter
 public class CartException extends RuntimeException {
     private HttpStatus status;
 

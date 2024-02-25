@@ -15,7 +15,9 @@
     <description>mall-backend</description>
     <properties>
         <java.version>17</java.version>
+
     </properties>
+
     <dependencies>
 
         <dependency>
@@ -74,7 +76,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+
+
     </dependencies>
+
+
 
     <build>
         <plugins>
@@ -90,7 +96,12 @@
                     </excludes>
                 </configuration>
             </plugin>
+
         </plugins>
+
+
     </build>
+
+
 
 </project>

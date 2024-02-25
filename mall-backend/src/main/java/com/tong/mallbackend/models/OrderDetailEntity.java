@@ -1,5 +1,8 @@
 package com.tong.mallbackend.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -7,6 +10,8 @@ import java.util.Objects;
  * ClassName: OrderDetailEntity
  * Package: com.tong.mallbackend.model
  */
+@Setter
+@Getter
 @Entity
 @Table(name = "order_detail", schema = "mall_tong")
 public class OrderDetailEntity {
@@ -27,56 +32,4 @@ public class OrderDetailEntity {
     @Column(name = "amount")
     private int amount;
 
-    public int getOrderDetailId() {
-        return orderDetailId;
-    }
-
-    public void setOrderDetailId(int orderDetailId) {
-        this.orderDetailId = orderDetailId;
-    }
-
-    public int getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
-    }
-
-    public int getProductId() {
-        return productId;
-    }
-
-    public void setProductId(int productId) {
-        this.productId = productId;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        OrderDetailEntity that = (OrderDetailEntity) o;
-        return orderDetailId == that.orderDetailId && orderId == that.orderId && productId == that.productId && quantity == that.quantity && amount == that.amount;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(orderDetailId, orderId, productId, quantity, amount);
-    }
 }

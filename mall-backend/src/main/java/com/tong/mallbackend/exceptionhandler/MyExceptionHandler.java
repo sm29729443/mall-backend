@@ -1,6 +1,7 @@
 package com.tong.mallbackend.exceptionhandler;
 
 import com.tong.mallbackend.dto.ErrorResponseBody;
+import com.tong.mallbackend.exceptions.CartException;
 import com.tong.mallbackend.exceptions.MyUserException;
 import com.tong.mallbackend.exceptions.ProductCategoryException;
 import com.tong.mallbackend.exceptions.ProductException;
@@ -50,6 +51,12 @@ public class MyExceptionHandler {
 
     @ExceptionHandler(ProductException.class)
     public ResponseEntity<ErrorResponseBody> handle(ProductException exception) {
+        log.warn(" ProductException 錯誤訊息:{}", exception.getMessage());
+        return ResponseEntity.status(exception.getStatus()).body(new ErrorResponseBody(exception));
+    }
+
+    @ExceptionHandler(CartException.class)
+    public ResponseEntity<ErrorResponseBody> handle(CartException exception) {
         log.warn(" ProductException 錯誤訊息:{}", exception.getMessage());
         return ResponseEntity.status(exception.getStatus()).body(new ErrorResponseBody(exception));
     }

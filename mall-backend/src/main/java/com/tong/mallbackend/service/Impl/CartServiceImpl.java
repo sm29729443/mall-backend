@@ -8,6 +8,7 @@ import com.tong.mallbackend.dto.CartItem;
 import com.tong.mallbackend.exceptions.CartException;
 import com.tong.mallbackend.exceptions.ProductException;
 import com.tong.mallbackend.models.CartDetailEntity;
+import com.tong.mallbackend.models.CartEntity;
 import com.tong.mallbackend.models.ProductEntity;
 import com.tong.mallbackend.service.CartService;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,7 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private ProductDao productDao;
 
+    @Transactional
     @Override
     public void addProductToCart(CartDetailRequest request, Integer cartId) {
         Optional<ProductEntity> productEntity = productDao.findById(request.getProductId());
@@ -46,19 +48,23 @@ public class CartServiceImpl implements CartService {
             throw new ProductException("商品庫存不足", HttpStatus.BAD_REQUEST);
         }
         Optional<CartDetailEntity> detailEntity = cartDetailDao.findByProductId(request.getProductId());
+        CartDetailEntity cartDetailEntity;
         if (detailEntity.isEmpty()) {
-            CartDetailEntity cartDetailEntity = new CartDetailEntity();
+            cartDetailEntity = new CartDetailEntity();
             cartDetailEntity.setCartId(cartId);
             cartDetailEntity.setProductId(request.getProductId());
             cartDetailEntity.setQuantity(request.getQuantity());
             cartDetailEntity.setAmount(product.getPrice() * request.getQuantity());
-            cartDetailDao.save(cartDetailEntity);
         } else {
-            CartDetailEntity cartDetailEntity = detailEntity.get();
+            cartDetailEntity = detailEntity.get();
             Integer quantity = cartDetailEntity.getQuantity() + request.getQuantity();
             cartDetailEntity.setQuantity(quantity);
             cartDetailEntity.setAmount(quantity * product.getPrice());
         }
+        cartDetailDao.save(cartDetailEntity);
+        CartEntity cartEntity = cartDao.findById(cartId).get();
+        cartEntity.setTotalAmount(cartDetailDao.findTotalAmountByCartId(cartId));
+
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.tong.mallbackend.dto.CartItem;
 import com.tong.mallbackend.models.CartDetailEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,4 +23,9 @@ public interface CartDetailDao extends JpaRepository<CartDetailEntity, Integer> 
             "FROM ProductEntity AS p JOIN CartDetailEntity AS c ON p.productId = c.productId " +
             "WHERE c.cartId = :cartId")
     List<CartItem> findByCartId(Integer cartId);
+
+    @Query(value = "SELECT SUM(amount) AS totalAmount FROM cart_detail WHERE cart_id = :cartId",nativeQuery = true)
+    Integer findTotalAmountByCartId(@Param(value = "cartId") Integer cartId);
+
+    void deleteCartDetailEntitiesByCartId(Integer cartId);
 }

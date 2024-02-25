@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -17,6 +18,7 @@ public class CartDetailRequest {
     @JsonProperty(value = "productId", required = true)
     Integer productId;
     @NotNull(message = "請輸入商品數量")
+    @Min(value = 1, message = "購物數量不得小於 1")
     @JsonProperty(value = "quantity", required = true)
     Integer quantity;
 
