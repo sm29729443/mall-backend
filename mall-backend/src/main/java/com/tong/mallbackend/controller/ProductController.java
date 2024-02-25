@@ -43,7 +43,7 @@ public class ProductController {
     // 新增商品
     @Operation(summary = "新增商品功能", description = "登入後賣家id從session拿",
             // 設定 Swagger requestBody
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "測試", required = true, content = @Content(schema = @Schema(implementation = ProductRequest.class))),
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(schema = @Schema(implementation = ProductRequest.class))),
             // 設定 Swagger responseBody
             responses = {
                     @ApiResponse(responseCode = "201", description = "商品創建成功",
@@ -98,7 +98,7 @@ public class ProductController {
     // 編輯商品
     @Operation(summary = "編輯商品功能",
             // 設定 Swagger requestBody
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "測試", required = true, content = @Content(schema = @Schema(implementation = ProductRequest.class))),
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(schema = @Schema(implementation = ProductRequest.class))),
             // 設定 Swagger responseBody
             responses = {
                     @ApiResponse(responseCode = "200", description = "商品編輯成功",

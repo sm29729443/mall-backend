@@ -33,7 +33,7 @@ public class UserController {
     // Swagger 設定
     @Operation(summary = "會員註冊功能", description = "一個信箱只能註冊一遍",
             // 設定 Swagger requestBody
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "測試", required = true, content = @Content(schema = @Schema(implementation = UserRegisterRequest.class))),
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(schema = @Schema(implementation = UserRegisterRequest.class))),
             // 設定 Swagger responseBody
             responses = {
                     @ApiResponse(responseCode = "201", description = "會員帳號創建成功",
@@ -62,7 +62,7 @@ public class UserController {
     // 會員登入
     @Operation(summary = "會員登入功能",
             // 設定 Swagger requestBody
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "測試", required = true, content = @Content(schema = @Schema(implementation = UserLoginRequest.class))),
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(schema = @Schema(implementation = UserLoginRequest.class))),
             // 設定 Swagger responseBody
             responses = {
                     @ApiResponse(responseCode = "200", description = "會員登入成功",
@@ -90,11 +90,11 @@ public class UserController {
 
     // 會員登出
     @Operation(summary = "會員登出功能",
-            // 設定 Swagger requestBody
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "測試", required = true, content = @Content(schema = @Schema(implementation = UserLoginRequest.class))),
             // 設定 Swagger responseBody
             responses = {
-                    @ApiResponse(responseCode = "200", description = "會員登出成功，不返回任何資訊"),
+                    @ApiResponse(responseCode = "200", description = "會員登出成功，不返回任何資訊",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema())),
                     @ApiResponse(responseCode = "401", description = "尚未登入",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ErrorResponseBody.class)))}
@@ -112,13 +112,13 @@ public class UserController {
     // 會員交易平台點數儲值、扣款
     @Operation(summary = "會員點數交易功能", description = "儲值或交易扣款都用這個",
             // 設定 Swagger requestBody
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "測試", required = true, content = @Content(schema = @Schema(implementation = UserLoginRequest.class))),
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(schema = @Schema(implementation = UserLoginRequest.class))),
             // 設定 Swagger responseBody
             responses = {
                     @ApiResponse(responseCode = "200", description = "point 更新成功",
                             content = @Content(mediaType = "application/json", schema = @Schema(type = "object", implementation = UserEntity.class))),
                     @ApiResponse(responseCode = "400", description = " point 參數錯誤，可能由以下原因產生：\n"
-                            + "扣款失敗，帳戶餘額不足",
+                            + "- 帳戶餘額不足\n",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ErrorResponseBody.class))),
                     @ApiResponse(responseCode = "401", description = "尚未登入",
